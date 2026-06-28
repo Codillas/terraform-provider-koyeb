@@ -52,6 +52,9 @@ jobs:
         with:
           go-version-file: "go.mod"
           cache: true
+      - uses: hashicorp/setup-terraform@v4.0.1
+        with:
+          terraform_wrapper: false
       - run: go generate ./...
       - name: git diff
         run: |
@@ -83,16 +86,31 @@ jobs:
           cache: true
         id: go
 
+      - name: Check acceptance test token
+        id: acceptance
+        env:
+          KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
+        run: |
+          if [[ -n "$KOYEB_TOKEN" ]]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::KOYEB_TOKEN is absent; skipping acceptance tests."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: hashicorp/setup-terraform@v4.0.1
+        if: steps.acceptance.outputs.enabled == 'true'
         with:
           terraform_version: ${{ matrix.terraform }}
           terraform_wrapper: false
 
       - name: Get dependencies
+        if: steps.acceptance.outputs.enabled == 'true'
         run: |
           go mod download
 
       - name: TF acceptance tests
+        if: steps.acceptance.outputs.enabled == 'true'
         timeout-minutes: 10
         env:
           TF_ACC: "1"
