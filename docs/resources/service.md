@@ -134,6 +134,7 @@ Optional:
 - `concurrent_requests` (Block Set) The number of concurrent requests across all Instances of your Service within a region (see [below for nested schema](#nestedblock--definition--scalings--targets--concurrent_requests))
 - `request_response_time` (Block Set) The average response time of requests across all Instances of your Service within a region (see [below for nested schema](#nestedblock--definition--scalings--targets--request_response_time))
 - `requests_per_second` (Block Set) The number of concurrent requests per second across all Instances of your Service within a region (see [below for nested schema](#nestedblock--definition--scalings--targets--requests_per_second))
+- `sleep_idle_delay` (Block Set) The delay in seconds after which a service that has received no requests is scaled to zero. Required when min is set to 0 (scale-to-zero). (see [below for nested schema](#nestedblock--definition--scalings--targets--sleep_idle_delay))
 
 <a id="nestedblock--definition--scalings--targets--average_cpu"></a>
 ### Nested Schema for `definition.scalings.targets.average_cpu`
@@ -169,6 +170,14 @@ Required:
 
 <a id="nestedblock--definition--scalings--targets--requests_per_second"></a>
 ### Nested Schema for `definition.scalings.targets.requests_per_second`
+
+Required:
+
+- `value` (Number) The target value of the autoscaling target
+
+
+<a id="nestedblock--definition--scalings--targets--sleep_idle_delay"></a>
+### Nested Schema for `definition.scalings.targets.sleep_idle_delay`
 
 Required:
 
