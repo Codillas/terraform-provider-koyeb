@@ -148,7 +148,7 @@ Read-Only:
 - `port` (Number)
 
 <a id="nestedobjatt--definition--health_checks--http--headers"></a>
-### Nested Schema for `definition.health_checks.http.headers`
+### Nested Schema for `definition.health_checks.http.port`
 
 Read-Only:
 
@@ -216,7 +216,7 @@ Read-Only:
 - `sleep_idle_delay` (Set of Object) (see [below for nested schema](#nestedobjatt--definition--scalings--targets--sleep_idle_delay))
 
 <a id="nestedobjatt--definition--scalings--targets--average_cpu"></a>
-### Nested Schema for `definition.scalings.targets.average_cpu`
+### Nested Schema for `definition.scalings.targets.sleep_idle_delay`
 
 Read-Only:
 
@@ -224,7 +224,7 @@ Read-Only:
 
 
 <a id="nestedobjatt--definition--scalings--targets--average_mem"></a>
-### Nested Schema for `definition.scalings.targets.average_mem`
+### Nested Schema for `definition.scalings.targets.sleep_idle_delay`
 
 Read-Only:
 
@@ -232,7 +232,7 @@ Read-Only:
 
 
 <a id="nestedobjatt--definition--scalings--targets--concurrent_requests"></a>
-### Nested Schema for `definition.scalings.targets.concurrent_requests`
+### Nested Schema for `definition.scalings.targets.sleep_idle_delay`
 
 Read-Only:
 
@@ -240,7 +240,7 @@ Read-Only:
 
 
 <a id="nestedobjatt--definition--scalings--targets--request_response_time"></a>
-### Nested Schema for `definition.scalings.targets.request_response_time`
+### Nested Schema for `definition.scalings.targets.sleep_idle_delay`
 
 Read-Only:
 
@@ -248,7 +248,7 @@ Read-Only:
 
 
 <a id="nestedobjatt--definition--scalings--targets--requests_per_second"></a>
-### Nested Schema for `definition.scalings.targets.requests_per_second`
+### Nested Schema for `definition.scalings.targets.sleep_idle_delay`
 
 Read-Only:
 
