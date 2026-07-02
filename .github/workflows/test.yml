@@ -44,6 +44,10 @@ jobs:
         with:
           go-version-file: "go.mod"
           cache: true
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.3.*"
+          terraform_wrapper: false
       - run: go generate ./...
       - name: git diff
         run: |
@@ -75,7 +79,7 @@ jobs:
           cache: true
         id: go
 
-      - uses: hashicorp/setup-terraform@v2
+      - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ matrix.terraform }}
           terraform_wrapper: false
@@ -84,18 +88,19 @@ jobs:
         run: |
           go mod download
 
-      - name: TF acceptance tests
+      - name: Go tests
         timeout-minutes: 10
         env:
-          TF_ACC: "1"
-
-          # Set whatever additional acceptance test env vars here. You can
-          # optionally use data from your repository secrets using the
-          # following syntax:
           KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
 
         run: |
-          go test -v -cover ./koyeb
+          if [ -z "${KOYEB_TOKEN:-}" ]; then
+            echo "KOYEB_TOKEN is not set; compiling tests without acceptance calls."
+            go test -run '^$' ./koyeb
+            exit 0
+          fi
+
+          TF_ACC=1 go test -v -cover ./koyeb
   required:
     name: Required
     if: ${{ always() && github.event_name == 'pull_request' }}
