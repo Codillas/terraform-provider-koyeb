@@ -102,7 +102,7 @@ jobs:
 
           TF_ACC=1 go test -v -cover ./koyeb
   required:
-    name: Required
+    name: Merge Gate
     if: ${{ always() && github.event_name == 'pull_request' }}
     needs:
       - build
