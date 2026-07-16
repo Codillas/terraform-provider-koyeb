@@ -33,7 +33,7 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version-file: 'go.mod'
-          cache: true
+          cache: false
       # -
       #   name: Import GPG key
       #   id: import_gpg
@@ -51,7 +51,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
       -
         name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v7.2.2
+        uses: goreleaser/goreleaser-action@v7
         with:
           version: latest
           args: release --clean
