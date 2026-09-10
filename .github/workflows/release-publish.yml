@@ -1,0 +1,58 @@
+name: Publish release
+
+on:
+  workflow_call:
+
+permissions:
+  contents: write
+
+jobs:
+  goreleaser:
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+    runs-on:
+      group: public-publisher-ci
+      labels: [site-dedicatednodes, os-linux, arch-x64]
+    steps:
+      - name: Isolate signing state
+        run: |
+          signing_home=$(mktemp -d "$RUNNER_TEMP/signing.XXXXXX")
+          chmod 700 "$signing_home"
+          echo "GNUPGHOME=$signing_home" >> "$GITHUB_ENV"
+      -
+        name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      -
+        name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+      # -
+      #   name: Import GPG key
+      #   id: import_gpg
+      #   uses: hashicorp/ghaction-import-gpg@v2.1.0
+      #   env:
+      #     # These secrets will need to be configured for the repository:
+      #     GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+      #     PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      -
+        name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v7
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+      -
+        name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v7
+        with:
+          version: latest
+          args: release --clean
+        env:
+          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
+          # GitHub sets this automatically
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
