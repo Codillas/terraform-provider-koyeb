@@ -20,8 +20,8 @@ jobs:
   build:
     name: Build
     runs-on:
-      group: public-ci
-      labels: [site-dedicatednodes, os-linux, arch-x64]
+      group: gha-public-ci
+      labels: [site-gha, os-linux, arch-x64]
     timeout-minutes: 5
     steps:
       - name: Check out code into the Go module directory
@@ -44,8 +44,8 @@ jobs:
 
   generate:
     runs-on:
-      group: public-ci
-      labels: [site-dedicatednodes, os-linux, arch-x64]
+      group: gha-public-ci
+      labels: [site-gha, os-linux, arch-x64]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-go@v6
@@ -67,8 +67,8 @@ jobs:
     name: Matrix Test
     needs: build
     runs-on:
-      group: public-ci
-      labels: [site-dedicatednodes, os-linux, arch-x64]
+      group: gha-public-ci
+      labels: [site-gha, os-linux, arch-x64]
     timeout-minutes: 15
     strategy:
       fail-fast: false
@@ -119,8 +119,8 @@ jobs:
       - generate
       - test
     runs-on:
-      group: public-ci
-      labels: [site-dedicatednodes, os-linux, arch-x64]
+      group: gha-public-ci
+      labels: [site-gha, os-linux, arch-x64]
 
     steps:
       - name: Fail if any required job failed
