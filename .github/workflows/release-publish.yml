@@ -10,8 +10,8 @@ jobs:
   goreleaser:
     if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
     runs-on:
-      group: public-publisher-ci
-      labels: [site-dedicatednodes, os-linux, arch-x64]
+      group: gha-public-publisher-ci
+      labels: [site-gha, os-linux, arch-x64]
     steps:
       - name: Isolate signing state
         run: |
